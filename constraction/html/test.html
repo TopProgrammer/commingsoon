@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+		<script src="https://cdn.bootcss.com/vue/2.2.2/vue.min.js"></script>
+	<div id="app-7">
+  <ol>
+    <!-- 现在我们为每个todo-item提供待办项对象    -->
+    <!-- 待办项对象是变量，即其内容可以是动态的 -->
+    <todo-item v-for="item in groceryList" v-bind:todo="item"></todo-item>
+  </ol>
+</div>
+
+	</body>
+	
+	<script>
+		
+		
+			Vue.component('todo-item', {
+	  props: ['todo'],
+	  template: '<li>'+
+		'<div class="liwrap">'+
+			'<div class="lileft">'+
+				'<div class="date">'+
+					'<span class="year">{{todo.year}}</span>'+
+					'<span class="md">{{todo.time}}</span>'+
+				'</div>'+
+			'</div>'+
+			
+			'<div class="point"><b></b></div>'+
+			
+			'<div class="liright">'+
+				'<div class="histt"><a href="#">{{todo.title}}</a></div>'+	
+				'<div class="hisct">{{todo.content}}</div>'+
+			'</div>'+
+		'</div>'+
+	'</li>'
+	})
+	var app7 = new Vue({
+	  el: '#app-7',
+	  data: {
+		groceryList: [
+		  { year: '蔬菜',time:'09-12',title:'我是王志成',content:'hahahhah' },
+		  { year: '蔬菜',time:'09-12',title:'我是王志成',content:'hahahhah' },
+		  { year: '蔬菜',time:'09-12',title:'我是王志成',content:'hahahhah' },
+		  { year: '蔬菜',time:'09-12',title:'我是王志成',content:'hahahhah' },
+		]
+	  }
+	})
+
+	</script>
+</html>

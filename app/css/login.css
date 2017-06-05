@@ -1,0 +1,106 @@
+/* CSS Document */
+*{
+	margin-left:auto;
+	margin-right:auto;
+	}
+body{
+	/*background-image:url(../images/body-back.jpg)
+	*/
+}
+.content{
+	width:600px;
+	height:420px;
+
+	z-index:999px;
+	position:absolute;
+	margin-top:100px;
+	-webkit-box-shadow: #0F2D47 2px 2px 10px;
+  -moz-box-shadow: #0F2D47 2px 2px 10px;
+  box-shadow: #0F2D47 2px 2px 10px;
+	}
+.content_mod{
+	width:400px;
+	height:250px;
+	background-color:#F5F5F5;
+	color:red;
+	position:block;
+	z-index:888;
+	margin-top:-63px;
+	}
+.touxiang{
+	width:105px;
+	height:105px;
+	margin-top:30px;
+	
+	position: relative;
+}
+.touxiang img{	
+	width:103px;
+	height:103px;
+	border:0px solid white;
+}
+form{
+	color:#999;
+	font-size:12px;
+}
+form input{
+	
+}
+#text_one{
+	margin:50px 92px auto 92px;
+	width:218px;
+	height:30px;
+	padding-left:40px;
+	background:transparent;border:0;
+	background-image:url(../images/kuang_bg_user.png);
+	}
+#text_two{
+	margin:20px 92px 20px 92px;
+	width:218px;
+	height:30px;
+	padding-left:40px;
+	background:transparent;border:0;
+	background-image:url(../images/kuang_bg_pass.png);
+	}
+
+#text_three{
+	margin:0px 0px auto 0px;
+	width:138px;
+	height:30px;
+	padding-left:40px;
+	background:transparent;
+	float:left;
+	diplay:inline;
+	background-image:url(../images/background_bg.png);
+	border:0;
+
+	}
+#validateCodeImage{
+	width:80px;
+	height:30px;	
+}
+#submit{
+	margin:20px 92px 20px 92px;
+	width:218px;
+
+}
+form #text_three{
+	margin-left:92px;
+}
+form #text_four{
+	margin-left:50px;
+	width:68px;
+	height:30px;
+}
+.note{
+	width:400px;
+	background-color: white;
+	margin-top:20px;
+	text-align: center;
+	line-height:46px;
+}
+.note span{
+	color:#385F7C;
+	font-weight: bold;
+	margin-left:10px;
+}

@@ -1,0 +1,35 @@
+/* CSS Document */
+.logo{
+  height:100px;
+  background-color: #375e7b;
+  color:white;
+  font-size: 30px;
+  padding-top:40px;
+  padding-left:60px;
+  pointer:absolute;
+}
+.logo span{
+  font-size:16px;
+  position:block;
+  margin-left:80%;
+  margin-top:15px;
+  display: hidden;
+}
+.left{
+  height:620px;
+  padding:30px;
+  background-color:#F9F9F9;
+  border-radius: 14px;
+}
+.right{
+  height:620px;
+  padding:30px;
+   background-color:#F9F9F9;
+  border-radius: 14px;
+  border-left:5px solid white;
+}
+table tr td{
+  text-align: center;
+}
+	
+

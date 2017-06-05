@@ -1,0 +1,13 @@
+/* CSS Document */
+table tr td{
+	font-size:12px;
+	}
+ul li{
+	float: left;
+	margin-left:30px;
+	list-style-type:none;
+	}
+ul li a{
+	text-decoration:none;
+}
+

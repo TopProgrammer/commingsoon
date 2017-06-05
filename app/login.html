@@ -1,0 +1,78 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>登陆</title>
+<link href="css/bootstrap.css" rel="stylesheet" type="text/css" />
+<link href="css/login.css" rel="stylesheet" type="text/css" />
+
+<script src="js/jquery-2.1.4.js" type="text/javascript" language="javascript"></script>
+<script src="js/login.js" type="text/javascript" language="javascript"></script>
+<script src="js/j.cookie.js" type="text/javascript" language="javascript"></script>
+<script src="js/jquerysession.js" type="text/javascript" language="javascript"></script>
+<script src="js/jquery.validate.js" type="text/javascript" language="javascript"></script>
+</head>
+<body>
+    <div class="container">
+      
+          
+          <div class="col-xs-6 col-md-6 col-lg-6">
+             <div class="content">
+             	<div class="content_mod">
+                	<form id="login_form">
+                    	<input type="text" id="text_one" name="id" autocomplete="on" pattern="[0-9]*" required class="form-control" placeholder="教师工号">
+                        <input type="password" id="text_two" name="password" autocomplete="off" aria-describedby="basic-addon1"required class="form-control" placeholder="密码"/>
+						<div>
+						<input name="code" id="text_three" 	type="code" class="ui-input" placeholder="验证码"> 
+							<img id="validateCodeImage" alt=""  src="http://localhost:8088/user/getLoginCode">
+						</div>
+                        <!--<input type="checkbox" id="text_three" checked="checked"/>记住我-->
+                        <button type="submit" id="submit" value="Login" class="btn btn-de btn btn-primary">登 陆</button>
+                    </form>
+                </div>
+                <div class="note"><p id="message">Not a registered user yet?<span>sign up now!</span></p></div>
+             </div>
+          </div>
+          
+        
+    </div>
+	<script type="text/javascript">
+
+	$().ready(function() {
+
+	$("#validateCodeImage").click(function(){
+			$("#validateCodeImage")[0].src="http://localhost:8088/"+"user/getLoginCode?"+(new Date).getTime();
+			});
+
+		$("#login_form").validate({
+			rules:{  //增加rules属性
+				id:{required : !0, minlength : 2} ,  
+				password:{required : !0} ,
+				code:{required : !0} 
+			},
+			
+			submitHandler:function(form){
+			    var a=$("#text_one").val();
+			    var b=$("#text_two").val();
+			    var c=$.trim($("#text_three").val());
+
+				$.post("http://localhost:8088/user/login",
+				{id:a,password:b,code:c}, 
+				function(result){
+					var json=$.parseJSON(result);
+					0==json.code?(
+						$.cookie("nickName",a, { expires: 7 }),
+						$.session.set('nickName', a),
+						window.location.href="student.html")
+					:($("#message").text(json.msg));
+				    
+					}
+				
+				);
+
+			}    
+    });
+});
+	</script>
+</body>
+</html>
