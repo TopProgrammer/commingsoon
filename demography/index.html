@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html style="height: 100%">
+<head>
+    <meta charset="utf-8">
+</head>
+<body style="height: 100%; margin: 0">
+<div id="container" style="height: 100%"></div>
+<script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/echarts.min.js"></script>
+<script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts-gl/echarts-gl.min.js"></script>
+<script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts-stat/ecStat.min.js"></script>
+<script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/extension/dataTool.min.js"></script>
+<script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/map/js/china.js"></script>
+<script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/map/js/world.js"></script>
+<!-- <script type="text/javascript" src="https://api.map.baidu.com/api?v=2.0&ak=xfhhaTThl11qYVrqLZii6w8qE5ggnhrY&__ec_v__=20190126"></script> -->
+<script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/extension/bmap.min.js"></script>
+<script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/simplex.js"></script>
+<script type="text/javascript">
+    var dom = document.getElementById("container");
+    var myChart = echarts.init(dom);
+    var app = {};
+    option = null;
+    app.title = '我的个人财务';
+
+    var perMonthIncome = 12750;
+    var perQuarterHouseFound = 11820;
+    var perMonthPrefit = 900;
+    var perMonthRoomCharge = -1290;
+    var perMonthMedical = -2879;
+    var perMonthInsurance = -1511;
+    var perMonthHousingloan= -1960;
+    var perMonthMayihuabei= -1600;
+    var perMonthMayijiebei= -2100;
+
+
+    var xAxisData = ["4月", "5月", "6月", "7月", "8月", "9月", "10月", "11月", "12月", "1月", "2月", "3月"];
+    var repayPlan = [-3000,0,0,0,0,0,0,0,0,0,0,0];
+    var otherPay = [-1000,0,0,0,0,0,0,0,0,0,0,0];
+    var benefit = [];
+    var actualPayout = [];
+    var salary = [];
+    var balance = [];
+    var assets = [];
+    var temp = 0;
+    for (var i = 0; i < 12; i++) {
+
+        var month = (i+4)%12;
+        // 住房公积金一季度取一次
+        var benefitValue = month%3==2? perMonthPrefit+perQuarterHouseFound:perMonthPrefit+0;
+        // 房租每季度交一次
+        var currentMonthRoomCharge = month%3==1?perMonthRoomCharge*3:perMonthRoomCharge*0;
+        // 医疗费用6月结束
+        var payout = (i<3?perMonthMedical:0)+currentMonthRoomCharge+perMonthInsurance+perMonthHousingloan+perMonthMayihuabei+perMonthMayijiebei+repayPlan[i]+otherPay[i];
+        // 当月结余
+        var currentMonthBalance = benefitValue+perMonthIncome+payout;
+        temp = currentMonthBalance + temp;
+
+        salary.push(perMonthIncome);
+        actualPayout.push(payout);
+        benefit.push(benefitValue);
+        assets.push(temp);
+        balance.push(currentMonthBalance);
+    }
+
+    var itemStyle = {
+        normal: {
+        },
+        emphasis: {
+            barBorderWidth: 1,
+            shadowBlur: 10,
+            shadowOffsetX: 0,
+            shadowOffsetY: 0,
+            shadowColor: 'rgba(0,0,0,0.5)'
+        }
+    };
+
+    option = {
+        backgroundColor: '#eee',
+        legend: {
+            data: ['薪酬','结余', '公积金福利','实际支出','资产积累'],
+            align: 'left',
+            left: 10
+        },
+        brush: {
+            toolbox: ['rect', 'polygon', 'lineX', 'lineY', 'keep', 'clear'],
+            xAxisIndex: 0
+        },
+        toolbox: {
+            feature: {
+                magicType: {
+                    type: ['stack', 'tiled']
+                },
+                dataView: {}
+            }
+        },
+        tooltip: {},
+        xAxis: {
+            data: xAxisData,
+            name: '日期',
+            silent: false,
+            axisLine: {onZero: false},
+            splitLine: {show: false},
+            splitArea: {show: false}
+        },
+        yAxis: {
+            name: '人民币（元）',
+            inverse: false,
+            splitArea: {show: false}
+        },
+        grid: {
+            left: 100
+        },
+
+        series: [
+            {
+                name: '结余',
+                type: 'line',
+                stack: 'two',
+                itemStyle: itemStyle,
+                data: balance
+            },
+            {
+                name: '薪酬',
+                type: 'bar',
+                stack: 'one',
+                itemStyle: itemStyle,
+                data: salary
+            },
+            {
+                name: '实际支出',
+                type: 'bar',
+                stack: 'one',
+                itemStyle: itemStyle,
+                data: actualPayout
+            },
+            {
+                name: '公积金福利',
+                type: 'bar',
+                stack: 'one',
+                itemStyle: itemStyle,
+                data: benefit
+            },
+            {
+                name: '资产积累',
+                type: 'line',
+                stack: 'three',
+                itemStyle: itemStyle,
+                data: assets
+            }
+        ]
+    };
+
+    myChart.on('brushSelected', renderBrushed);
+
+    function renderBrushed(params) {
+        var brushed = [];
+        var brushComponent = params.batch[0];
+
+        for (var sIdx = 0; sIdx < brushComponent.selected.length; sIdx++) {
+            var rawIndices = brushComponent.selected[sIdx].dataIndex;
+            brushed.push('[Series ' + sIdx + '] ' + rawIndices.join(', '));
+        }
+
+        myChart.setOption({
+            title: {
+                backgroundColor: '#333',
+                text: 'SELECTED DATA INDICES: \n' + brushed.join('\n'),
+                bottom: 0,
+                right: 0,
+                width: 100,
+                textStyle: {
+                    fontSize: 12,
+                    color: '#fff'
+                }
+            }
+        });
+    };
+    if (option && typeof option === "object") {
+        myChart.setOption(option, true);
+    }
+</script>
+</body>
+</html>
